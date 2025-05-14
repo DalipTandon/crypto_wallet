@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Nav from "./Nav";
 
 const Hero = () => {
@@ -16,10 +17,10 @@ const Hero = () => {
           </p>
           
           <div className="flex flex-col gap-4">
-            <button className="bg-white text-black py-2 px-4 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-300">
-              Create a New Wallet
+           <button className="bg-white text-black py-2 px-4 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-300 hover:scale-105">
+           <Link to="/seedPhrase" > Create a New Wallet</Link> 
             </button>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300">
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 hover:scale-105">
               I Already Have a Wallet
             </button>
           </div>
