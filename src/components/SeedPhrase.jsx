@@ -60,7 +60,7 @@ const SeedPhrase = () => {
 
           <div className="text-center">
             <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300">
-              Generate a Seed Phrase
+             <Link to={"/generateseed"}>Generate a Seed Phrase</Link> 
             </button>
           </div>
 
