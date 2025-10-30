@@ -1,11 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 
 function App() {
   return (
-    <div>
-      
-    </div>
+    <div className='h-full  flex flex-col'>
+
+      <Navbar />
+      <Hero />
+
+      </div>
   );
 }
 
