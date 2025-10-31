@@ -11,7 +11,7 @@ function App() {
     <BrowserRouter basename='/'>
       <Routes>
     <Route path='/' element={<Hero />} />
-    <Route path='/wallet' element={<WalletGenerator/>} />
+    <Route path='/wallet/:chain' element={<WalletGenerator/>} />
       </Routes>      
     </BrowserRouter>
   
