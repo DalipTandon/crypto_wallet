@@ -6,6 +6,9 @@ import { derivePath } from "ed25519-hd-key";
 import nacl from "tweetnacl";
 import { Keypair } from "@solana/web3.js";
 import bs58 from "bs58";
+import { HDNodeWallet } from "ethers"; // Add this import at the top
+import { Wallet } from "ethers"; // Also from ethers
+import { ethers } from "ethers";
 
 const WalletGenerator = () => {
   const { chain } = useParams();
@@ -18,24 +21,27 @@ const WalletGenerator = () => {
   const [visibleKeys, setVisibleKeys] = useState({}); // private key visibility
 
   useEffect(() => {
-    const init = async () => {
-      try {
-        if (state?.seed) {
-          await createWalletFromMnemonic(state.seed, 0, true);
-        } else if (state?.autoGenerate) {
-          const mn = generateMnemonic();
-          setMnemonic(mn);
-          await createWalletFromMnemonic(mn, 0, true);
-        }
-      } catch (err) {
-        setError("Error initializing wallet: " + err.message);
+  const init = async () => {
+    try {
+      if (state?.seed) {
+        await createWalletFromMnemonic(state.seed, 0, true);
+      } else if (state?.autoGenerate) {
+        const mn = generateMnemonic();
+        setMnemonic(mn);
+        await createWalletFromMnemonic(mn, 0, true);
       }
-    };
-    init();
-  }, [state]);
+    } catch (err) {
+      setError("Error initializing wallet: " + err.message);
+    }
+  };
+  init();
+}, [state]);
 
-  const createWalletFromMnemonic = async (mn, walletIndex, reset = false) => {
-    const seed = await mnemonicToSeed(mn);
+const createWalletFromMnemonic = async (mn, walletIndex, reset = false) => {
+  const seed = await mnemonicToSeed(mn);
+
+  if (chain === "solana") {
+    // ✅ Solana derivation path
     const path = `m/44'/501'/${walletIndex}'/0'`;
     const derivedSeed = derivePath(path, seed.toString("hex")).key;
     const keyPair = nacl.sign.keyPair.fromSeed(derivedSeed);
@@ -52,7 +58,28 @@ const WalletGenerator = () => {
     };
 
     setWallets((prev) => (reset ? [newWallet] : [...prev, newWallet]));
-  };
+  }
+
+  else if (chain === "ethereum") {
+    // ✅ Ethereum derivation path
+    const derivationPath = `m/44'/60'/${walletIndex}'/0/0`;
+
+    // Derive wallet from seed
+    const hdNode = HDNodeWallet.fromSeed(seed);
+    const child = hdNode.derivePath(derivationPath);
+    const privateKey = child.privateKey;
+    const wallet = new Wallet(privateKey);
+
+    const newWallet = {
+      index: walletIndex,
+      publicKey: wallet.address,
+      privateKey: wallet.privateKey,
+      derivationPath,
+    };
+
+    setWallets((prev) => (reset ? [newWallet] : [...prev, newWallet]));
+  }
+};
 
   const addWallet = async () => {
     try {

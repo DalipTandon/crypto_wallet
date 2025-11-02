@@ -10,7 +10,7 @@ const Navbar = () => {
            <Link to={"/"}> <h3 className="text-4xl font-bold text-blue-600">DLock</h3></Link>
           </div>
           <div className="py-4 md:ml-6 md:flex md:space-x-8">
-            <a href="#" className="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium">Home</a>
+            {/* <a href="#" className="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium">Home</a> */}
           </div>
         </div>
       </div>
