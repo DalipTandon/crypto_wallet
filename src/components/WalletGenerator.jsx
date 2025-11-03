@@ -61,10 +61,8 @@ const createWalletFromMnemonic = async (mn, walletIndex, reset = false) => {
   }
 
   else if (chain === "ethereum") {
-    // ✅ Ethereum derivation path
     const derivationPath = `m/44'/60'/${walletIndex}'/0/0`;
 
-    // Derive wallet from seed
     const hdNode = HDNodeWallet.fromSeed(seed);
     const child = hdNode.derivePath(derivationPath);
     const privateKey = child.privateKey;
